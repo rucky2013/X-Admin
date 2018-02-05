@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds" debug="true" >\
+    <property resource="logback/logback.properties" />
+    <contextName>rent</contextName>
+
+    <!-- 控制台输出 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度 %msg：日志消息，%n是换行符-->
+            <pattern>${log.encoder.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 按照每天生成日志文件 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名-->
+            <FileNamePattern>${log.file.path}/${log.file.name.prefix}.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <!--日志文件最大的大小-->
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${log.file.max.size}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志文件保留天数-->
+            <MaxHistory>${log.file.max.history}</MaxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>${log.encoder.pattern}</pattern>
+        </encoder>
+        <!--日志文件最大的大小-->
+        <!--<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
+            <!--<MaxFileSize>10MB</MaxFileSize>-->
+        <!--</triggeringPolicy>-->
+        <!-- 设置过滤级别: (TRACE, DEBUG, INFO, WARN, ERROR, ALL和OFF, 还有一个特俗值INHERITED或者同义词NULL，代表强制执行上级的级别) -->
+        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+            <!--<level>INFO</level>-->
+            <!--<onMatch>ACCEPT</onMatch>-->
+            <!--<onMismatch>DENY</onMismatch>-->
+        <!--</filter>-->
+    </appender>
+
+    <!-- (TRACE, DEBUG, INFO, WARN, ERROR, ALL和OFF, 但不可设置INHERITED或者同义词NULL) -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <!--<appender-ref ref="FILE"/>-->
+    </root>
+
+    <!-- 测试、环境 -->
+    <!--<springProfile name="test, dev">-->
+        <!--<logger name="${log.package.name}" level="DEBUG">-->
+            <!--<appender-ref ref="CONSOLE" />-->
+        <!--</logger>-->
+    <!--</springProfile>-->
+
+    <!-- 生产环境 -->
+    <!--<springProfile name="prod">-->
+        <!--<logger name="${log.package.name}" level="ERROR">-->
+            <!--<appender-ref ref="FILE" />-->
+        <!--</logger>-->
+    <!--</springProfile>-->
+</configuration>

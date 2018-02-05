@@ -1,0 +1,13 @@
+# 测试环境相关配置
+
+# app
+server:
+  port: 8080
+  context-path: /xadmin
+
+# spring
+spring:
+  # hot-deploy
+  devtools:
+    restart:
+      enabled: true

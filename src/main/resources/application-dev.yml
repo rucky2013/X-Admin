@@ -1,0 +1,14 @@
+# 开发环境相关环境
+
+# app
+server:
+  port: 8080
+  context-path: /xadmin
+
+# spring
+spring:
+  # hot-deploy
+  devtools:
+    restart:
+      enabled: true
+

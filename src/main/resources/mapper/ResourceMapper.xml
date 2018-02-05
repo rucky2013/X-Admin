@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leaf.xadmin.mapper.ResourceMapper">
+
+    <sql id="RESOURCE_COLS">
+        r.id, r.name, r.desc, r.path, r.type, r.create_time, r.update_time
+    </sql>
+
+    <sql id="ROLE_COLS">
+        ro.id, ro.name, ro.desc, ro.create_time, ro.update_time
+    </sql>
+
+    <sql id="PERMISSION_COLS">
+        pe.id, pe.name, pe.desc, pe.create_time, pe.update_time
+    </sql>
+
+    <insert id="insertBatch" parameterType="list">
+      INSERT INTO resource VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item})
+        </foreach>
+    </insert>
+
+    <insert id="insertResourceRole">
+      INSERT INTO resource_role VALUES (#{resourceId}, #{roleId})
+    </insert>
+
+    <insert id="insertResourcePermission">
+      INSERT INTO resource_perm VALUES (#{resourceId}, #{permissionId})
+    </insert>
+
+    <update id="updateBatch">
+      UPDATE resource
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="name = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.name != null ">
+                        when id=#{item.id} then #{item.name}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="desc = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.desc != null ">
+                        when id=#{item.id} then #{item.desc}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="path = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.path != null ">
+                        when id=#{item.id} then #{item.path}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="type = case" suffix="end,">
+                <foreach collection="list" item="item" index="index">
+                    <if test="item.type != null ">
+                        when id=#{item.id} then #{item.type}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+      WHERE id in
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <delete id="deleteResourceRole">
+        DELETE FROM resource_role WHERE resource_id = #{resourceId} AND role_id = #{roleId}
+    </delete>
+
+    <delete id="deleteResourcePermission">
+        DELETE FROM resource_perm WHERE resource_id = #{resourceId} AND permission_id = #{permissionId}
+    </delete>
+
+    <select id="selectResourceRoles" resultType="com.leaf.xadmin.entity.Role">
+      SELECT <include refid="ROLE_COLS" />
+      FROM resource r
+      RIGHT JOIN resource_role rr ON r.id = rr.resource_id
+      LEFT JOIN role ro ON rr.role_id = ro.id
+      WHERE r.id = #{resourceId}
+    </select>
+
+    <select id="selectResourcePermissions" resultType="com.leaf.xadmin.entity.Permission">
+        SELECT <include refid="PERMISSION_COLS" />
+        FROM resource r
+        RIGHT JOIN resource_perm rp ON r.id = rp.resource_id
+        LEFT JOIN permission pe ON rp.permission_id = pe.id
+        WHERE r.id = #{resourceId}
+    </select>
+
+    <select id="selectResourceRolesByPath" resultType="com.leaf.xadmin.entity.Role">
+        SELECT <include refid="ROLE_COLS" />
+        FROM resource r
+        RIGHT JOIN resource_role rr ON r.id = rr.resource_id
+        LEFT JOIN role ro ON rr.role_id = ro.id
+        WHERE r.path = #{path}
+    </select>
+
+    <select id="selectResourcePermissionsByPath" resultType="com.leaf.xadmin.entity.Permission">
+        SELECT <include refid="PERMISSION_COLS" />
+        FROM resource r
+        RIGHT JOIN resource_perm rp ON r.id = rp.resource_id
+        LEFT JOIN permission pe ON rp.permission_id = pe.id
+        WHERE r.path = #{path}
+    </select>
+
+</mapper>

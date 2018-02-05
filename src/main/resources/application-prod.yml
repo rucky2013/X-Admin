@@ -1,0 +1,13 @@
+# 生产环境相关配置
+
+# app
+server:
+  port: 80
+  context-path: /xadmin
+
+# spring
+spring:
+  # hot-deploy
+  devtools:
+    restart:
+      enabled: false
