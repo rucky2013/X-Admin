@@ -1,4 +1,4 @@
-package com.leaf.xadmin.utils.generater;
+package com.leaf.xadmin.utils.generator;
 
 /**
  * Thanks to :

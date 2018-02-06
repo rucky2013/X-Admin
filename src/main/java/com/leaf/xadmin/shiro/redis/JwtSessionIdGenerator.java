@@ -1,6 +1,6 @@
 package com.leaf.xadmin.shiro.redis;
 
-import com.leaf.xadmin.utils.generater.SnowflakeUtil;
+import com.leaf.xadmin.utils.generator.SnowflakeUtil;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.SessionIdGenerator;
 
