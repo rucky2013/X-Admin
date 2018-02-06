@@ -61,6 +61,19 @@ spring:
   # jackson
   jackson:
     default-property-inclusion: non_empty
+  # mail
+  mail:
+    host: smtp.qq.com
+    username: 806569552@qq.com
+    password: itvlgudqipshbbgf
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
 # mybatis-plus
 mybatis-plus:

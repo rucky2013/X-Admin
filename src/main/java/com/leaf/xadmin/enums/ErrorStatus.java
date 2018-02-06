@@ -25,7 +25,9 @@ public enum ErrorStatus {
     HTTP_METHOD_ERROR(2, "2001", "HTTP错误", "请求姿势不对，要不换个试试----(｡◕‿◕｡)----"),
     MISS_PARAMETER_ERROR(2, "2002", "HTTP错误", "缺少请求参数，请填写完整请求参数"),
     SYS_UNKNOWN_ERROR(3, "3001", "未知错误", "检测到系统未知异常，请联系管理员"),
-    SYS_INNER_ERROR(4, "3002", "系统错误", "系统内部错误，无法识别异常类型");
+    SYS_INNER_ERROR(4, "3002", "系统错误", "系统内部错误，无法识别异常类型"),
+    MAIL_SEND_ERROR(4, "3003", "系统错误", "邮件发送失败，请检查确认"),
+    ;
 
     private Integer type;
     private String code;
