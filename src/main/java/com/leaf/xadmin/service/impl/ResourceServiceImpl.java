@@ -32,12 +32,8 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
     }
 
     @Override
-    public Resource queryOneByPath(String path) throws SQLDataException {
-        List<Resource> resourceList = baseMapper.selectList(new EntityWrapper<Resource>().eq("path", path));
-        if (resourceList.size() != 1) {
-            throw new SQLDataException();
-        }
-        return resourceList.get(0);
+    public Resource queryOneByPath(String path) {
+        return baseMapper.selectOne(Resource.builder().path(path).build());
     }
 
     @Override

@@ -20,5 +20,13 @@ public interface PermissionMapper extends SuperMapper<Permission> {
      * @param name
      * @return
      */
-    List<Permission> selectPermissions(String name);
+    List<Permission> selectUserPermissions(String name);
+
+    /**
+     * 查询管理员权限列表
+     *
+     * @param name
+     * @return
+     */
+    List<Permission> selectAdminPermissions(String name);
 }

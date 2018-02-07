@@ -37,7 +37,7 @@ public interface IResourceService extends IService<Resource> {
      * @return
      * @throws SQLDataException
      */
-    Resource queryOneByPath(String path) throws SQLDataException;
+    Resource queryOneByPath(String path);
 
     /**
      * 根据路径查询角色信息列表

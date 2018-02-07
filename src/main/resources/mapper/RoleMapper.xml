@@ -5,12 +5,21 @@
         r.id, r.name, r.desc, r.create_time, r.update_time
     </sql>
 
-    <select id="selectRoles" resultType="com.leaf.xadmin.entity.Role">
+    <select id="selectUserRoles" resultType="com.leaf.xadmin.entity.Role">
         SELECT <include refid="ROLE_COLS" />
         FROM user u
-        RIGHT JOIN user_role ur ON u.id = ur.user_id
+        RIGHT JOIN user_admin_role ur ON u.id = ur.user_admin_id
         LEFT JOIN role r ON ur.role_id = r.id
         WHERE u.name = #{name}
+    </select>
+
+
+    <select id="selectAdminRoles" resultType="com.leaf.xadmin.entity.Role">
+        SELECT <include refid="ROLE_COLS" />
+        FROM admin a
+        RIGHT JOIN user_admin_role ur ON a.id = ur.user_admin_id
+        LEFT JOIN role r ON ur.role_id = r.id
+        WHERE a.name = #{name}
     </select>
 
 </mapper>

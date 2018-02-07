@@ -17,7 +17,12 @@ import java.util.List;
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
     @Override
-    public List<Role> queryRoles(String name) {
-        return baseMapper.selectRoles(name);
+    public List<Role> queryUserRoles(String name) {
+        return baseMapper.selectUserRoles(name);
+    }
+
+    @Override
+    public List<Role> queryAdminRoles(String name) {
+        return baseMapper.selectAdminRoles(name);
     }
 }

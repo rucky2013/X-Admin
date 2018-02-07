@@ -61,13 +61,13 @@ CREATE TABLE role (
   UNIQUE INDEX uniq_name(name)
 ) ENGINE=innodb, CHARSET=utf8mb4, COMMENT='角色表';
 
--- 用户角色表(关联表)
-DROP TABLE user_role;
-CREATE TABLE user_role (
-  `user_id` VARCHAR(32) NOT NULL COMMENT '用户id',
+-- 用户/管理员角色表(关联表)
+DROP TABLE user_admin_role;
+CREATE TABLE user_admin_role (
+  `user_admin_id` VARCHAR(32) NOT NULL COMMENT '用户/管理员id',
   `role_id` BIGINT NOT NULL COMMENT '角色id',
-  PRIMARY KEY (user_id, role_id)
-) ENGINE=innodb, CHARSET=utf8mb4, COMMENT='用户角色表';
+  PRIMARY KEY (user_admin_id, role_id)
+) ENGINE=innodb, CHARSET=utf8mb4, COMMENT='用户/管理员角色表';
 
 -- 权限表
 DROP TABLE permission;
@@ -91,12 +91,18 @@ CREATE TABLE role_permission (
 -- 管理员表
 DROP TABLE admin;
 CREATE TABLE admin (
-  `id` BIGINT PRIMARY KEY AUTO_INCREMENT,
+  `id` VARCHAR(32) PRIMARY KEY,
   `name` VARCHAR(16) NOT NULL COMMENT '管理员名',
   `pass` VARCHAR(16) NOT NULL COMMENT '密码',
+  `phone` VARCHAR(11) NOT NULL COMMENT '手机号',
+  `email` VARCHAR(32) COMMENT '邮箱',
+  `avatar` VARCHAR(32) COMMENT '头像',
+  `age` INTEGER DEFAULT 18 COMMENT '年龄',
+  `sex` TINYINT DEFAULT 1 COMMENT '性别',
+  `desc` VARCHAR(64) COMMENT '描述',
   `type` TINYINT NOT NULL DEFAULT 1 COMMENT '类型',
   `status` TINYINT NOT NULL DEFAULT 1 COMMENT '状态',
-  `last_login_time` TIMESTAMP NOT NULL COMMENT '最后登录时间',
+  `last_login_time` TIMESTAMP NOT NULL DEFAULT current_timestamp COMMENT '最后登录时间',
   `last_login_ip` INTEGER UNSIGNED COMMENT '最后登录ip',
   `last_login_local` VARCHAR(32) COMMENT '最后登录地点',
   `create_time` TIMESTAMP NOT NULL DEFAULT current_timestamp COMMENT '创建时间',

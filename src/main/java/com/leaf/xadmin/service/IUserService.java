@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.leaf.xadmin.entity.User;
 import com.leaf.xadmin.enums.UserStatus;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,6 +12,14 @@ import java.util.List;
  * <p>date: 2017-12-31 1:47</p>
  */
 public interface IUserService extends IService<User> {
+
+    /**
+     * 添加用户(若添加成功返回id)
+     *
+     * @param user
+     * @return
+     */
+    Serializable addOne(User user);
 
     /**
      * 用户登出(清理自定义缓存信息)

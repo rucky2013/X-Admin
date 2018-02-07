@@ -19,9 +19,15 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 public class Admin {
-    private Long id;
+    private String id;
     private String name;
     private String pass;
+    private String phone;
+    private String email;
+    private String avatar;
+    private Integer age;
+    private Integer sex;
+    private String desc;
     private Integer type;
     private Integer status;
     private Timestamp lastLoginTime;

@@ -1,5 +1,6 @@
 package com.leaf.xadmin.utils.encrypt;
 
+import com.leaf.xadmin.enums.LoginType;
 import com.leaf.xadmin.utils.encrypt.PassEncryptUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -22,11 +23,13 @@ public class PassEncryptUtilTest {
 
     @Test
     public void decryptPass() throws Exception {
+        passEncryptUtil.setSecretKey(LoginType.USER.getType() + "xbc");
         log.info(passEncryptUtil.decryptPass(passEncryptUtil.encryptPass("123456")));
     }
 
     @Test
     public void encryptPass() throws Exception {
+        passEncryptUtil.setSecretKey(LoginType.ADMIN.getType() + "admin");
         log.info(passEncryptUtil.encryptPass("123456"));
     }
 

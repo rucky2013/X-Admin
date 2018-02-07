@@ -5,6 +5,7 @@ import com.leaf.xadmin.entity.Admin;
 import com.leaf.xadmin.enums.AdminStatus;
 import org.apache.shiro.session.Session;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -13,6 +14,22 @@ import java.util.List;
  * <p>date: 2018-01-05 18:23</p>
  */
 public interface IAdminService extends IService<Admin> {
+
+    /**
+     * 查询管理员信息
+     *
+     * @param name
+     * @return
+     */
+    Admin queryOne(String name);
+
+    /**
+     * 添加管理员
+     *
+     * @param admin
+     * @return
+     */
+    Serializable addOne(Admin admin);
 
     /**
      * 获取存活session

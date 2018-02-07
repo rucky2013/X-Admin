@@ -20,5 +20,13 @@ public interface RoleMapper extends SuperMapper<Role> {
      * @param name
      * @return
      */
-    List<Role> selectRoles(String name);
+    List<Role> selectUserRoles(String name);
+
+    /**
+     * 查询管理员角色列表
+     *
+     * @param name
+     * @return
+     */
+    List<Role> selectAdminRoles(String name);
 }

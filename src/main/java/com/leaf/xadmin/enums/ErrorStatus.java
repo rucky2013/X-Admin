@@ -22,6 +22,7 @@ public enum ErrorStatus {
     TOKEN_INVALID_ERROR(1, "1006", "权限错误", "登陆凭证无效，请重新获取"),
     TOKEN_DECODE_ERROR(1, "1007", "权限错误", "凭证解码错误，请联系管理员"),
     FORCE_LOGOUT_ERROR(1, "1008", "权限错误", "用户已被管理员强制下线，请重新登录"),
+    ACCOUNT_EXIST_ERROR(1, "1009", "权限错误", "账户已存在，请重新注册"),
     HTTP_METHOD_ERROR(2, "2001", "HTTP错误", "请求姿势不对，要不换个试试----(｡◕‿◕｡)----"),
     MISS_PARAMETER_ERROR(2, "2002", "HTTP错误", "缺少请求参数，请填写完整请求参数"),
     SYS_UNKNOWN_ERROR(3, "3001", "未知错误", "检测到系统未知异常，请联系管理员"),

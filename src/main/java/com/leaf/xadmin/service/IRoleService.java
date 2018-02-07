@@ -17,5 +17,13 @@ public interface IRoleService extends IService<Role> {
      * @param name
      * @return
      */
-    List<Role> queryRoles(String name);
+    List<Role> queryUserRoles(String name);
+
+    /**
+     * 查询管理员角色列表
+     *
+     * @param name
+     * @return
+     */
+    List<Role> queryAdminRoles(String name);
 }

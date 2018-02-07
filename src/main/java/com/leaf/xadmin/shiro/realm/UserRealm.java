@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Lazy;
 import java.util.List;
 
 /**
- * 自定义shiro权限域 UserRealm
+ * 自定义用户权限域 UserRealm
  *
  * @author leaf
  */
@@ -48,11 +48,11 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         // 获取登录用户名
-        String username = (String) principalCollection.getPrimaryPrincipal();
+        String name = (String) principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         // 获取用户权限和角色列表
-        List<Role> roles = roleService.queryRoles(username);
-        List<Permission> permissions = permissionService.queryPermissions(username);
+        List<Role> roles = roleService.queryUserRoles(name);
+        List<Permission> permissions = permissionService.queryUserPermissions(name);
 
         // 加载用户角色列表
         for (Role role : roles) {

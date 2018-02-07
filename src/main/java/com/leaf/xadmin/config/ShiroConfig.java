@@ -42,9 +42,6 @@ import java.util.stream.Collectors;
 @PropertySource(value = {"classpath:application.yml", "classpath:shiro/shiro.properties"})
 public class ShiroConfig {
 
-    @Value("${shiro.secret.key}")
-    @Setter @Getter private String secretKey;
-
     @Value("${spring.redis.host}")
     private String host;
 

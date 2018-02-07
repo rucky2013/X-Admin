@@ -1,6 +1,7 @@
 package com.leaf.xadmin.utils.encrypt;
 
 import com.leaf.xadmin.config.ShiroConfig;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +17,10 @@ import java.security.Key;
  *
  */
 @Component
+@Data
 public class PassEncryptUtil {
 
-	@Autowired
+	private String secretKey;
 	private DesUtil desUtil;
 
 	/**
@@ -30,6 +32,7 @@ public class PassEncryptUtil {
 	public String decryptPass(String password) {
 		String result = null;
 		try {
+			desUtil = new DesUtil(secretKey);
 			result = desUtil.decrypt(password);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -48,6 +51,7 @@ public class PassEncryptUtil {
 	public String encryptPass(String password) {
 		String encrypt = null;
 		try {
+			desUtil = new DesUtil(secretKey);
 			encrypt = desUtil.encrypt(password);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -55,10 +59,7 @@ public class PassEncryptUtil {
 		return encrypt;
 	}
 
-	@Component
 	public class DesUtil {
-
-		private ShiroConfig shiroConfig;
 
 		/**
 		 * 加密工具
@@ -74,10 +75,8 @@ public class PassEncryptUtil {
 		 * 默认构造方法，使用默认密钥
 		 *
 		 */
-		@Autowired
-		public DesUtil(ShiroConfig shiroConfig) throws Exception {
-			this.shiroConfig = shiroConfig;
-			Key key = getKey(shiroConfig.getSecretKey().getBytes());
+		public DesUtil(String secretKey) throws Exception {
+			Key key = getKey(secretKey.getBytes());
 			encryptCipher = Cipher.getInstance("DES");
 			encryptCipher.init(Cipher.ENCRYPT_MODE, key);
 

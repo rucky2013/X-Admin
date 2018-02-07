@@ -21,14 +21,14 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableCaching
 @EnableWebMvc
 @EnableConfigurationProperties
-public class XAdminApplication extends SpringBootServletInitializer {
+public class AdminApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(XAdminApplication.class, args);
+        SpringApplication.run(AdminApplication.class, args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(XAdminApplication.class);
+        return application.sources(AdminApplication.class);
     }
 }

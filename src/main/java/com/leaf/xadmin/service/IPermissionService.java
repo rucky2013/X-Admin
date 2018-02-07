@@ -17,5 +17,13 @@ public interface IPermissionService extends IService<Permission> {
      * @param name
      * @return
      */
-    List<Permission> queryPermissions(String name);
+    List<Permission> queryUserPermissions(String name);
+
+    /**
+     * 查询管理员权限列表
+     *
+     * @param name
+     * @return
+     */
+    List<Permission> queryAdminPermissions(String name);
 }
