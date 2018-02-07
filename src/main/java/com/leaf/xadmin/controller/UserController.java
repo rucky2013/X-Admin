@@ -1,5 +1,7 @@
 package com.leaf.xadmin.controller;
 
+import com.leaf.xadmin.enums.LoginType;
+import com.leaf.xadmin.shiro.token.ExtendedUsernamePasswordToken;
 import com.leaf.xadmin.vo.ResponseResultVO;
 import com.leaf.xadmin.entity.User;
 import com.leaf.xadmin.enums.ErrorStatus;
@@ -40,7 +42,7 @@ public class UserController {
         return user != null ? ResponseResultUtil.success(user) : ResponseResultUtil.fail();
     }
 
-    @ApiOperation(value = "获取指定id用户信息")
+    @ApiOperation(value = "获取指定用户名信息")
     @GetMapping(value = "getUser/{name}")
     public ResponseResultVO getUserByName(@PathVariable("name") String name) {
         return ResponseResultUtil.success(userService.queryOneByName(name));
@@ -53,7 +55,7 @@ public class UserController {
         String loginToken; // 登录凭证
         Subject subject = SecurityUtils.getSubject();
         if (!subject.isAuthenticated()) {
-            UsernamePasswordToken token = new UsernamePasswordToken(name, pass);
+            ExtendedUsernamePasswordToken token = new ExtendedUsernamePasswordToken(name, pass, LoginType.USER.getType());
             subject.login(token);
             User user = userService.queryOneByName(name);
             loginToken = JwtUtil.generateToken(user.getId(), name, user.getPass());
@@ -61,13 +63,8 @@ public class UserController {
             response.addCookie(new Cookie("token", loginToken));
             return ResponseResultUtil.success(loginToken);
         } else {
-            // 判断再次请求登陆时，是否与已保存的session信息一致
-            if (SecurityUtils.getSubject().getPrincipal().toString().equals(name)) {
-                throw new RepeatLoginException(ErrorStatus.REPEAT_LOGIN_ERROR);
-            } else {
-                logout();
-                return login(name, pass, response);
-            }
+            logout();
+            return login(name, pass, response);
         }
     }
 

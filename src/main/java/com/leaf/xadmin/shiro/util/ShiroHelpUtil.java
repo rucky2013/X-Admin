@@ -2,13 +2,8 @@ package com.leaf.xadmin.shiro.util;
 
 import com.google.common.base.Strings;
 import com.leaf.xadmin.constants.GlobalConstants;
-import com.leaf.xadmin.shiro.realm.MyShiroRealm;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.mgt.RealmSecurityManager;
 import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.SimplePrincipalCollection;
-import org.apache.shiro.subject.Subject;
 import org.apache.shiro.subject.support.DefaultSubjectContext;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;

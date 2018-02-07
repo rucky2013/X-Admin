@@ -19,15 +19,16 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
- * 自定义shiro权限域 MyShiroRealm
+ * 自定义shiro权限域 UserRealm
  *
  * @author leaf
  */
-public class MyShiroRealm extends AuthorizingRealm {
+public class AdminRealm extends AuthorizingRealm {
 
     @Autowired
     @Lazy

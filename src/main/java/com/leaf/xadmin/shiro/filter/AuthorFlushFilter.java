@@ -1,11 +1,15 @@
 package com.leaf.xadmin.shiro.filter;
 
 import com.leaf.xadmin.constants.GlobalConstants;
-import com.leaf.xadmin.shiro.realm.MyShiroRealm;
+import com.leaf.xadmin.enums.ErrorStatus;
+import com.leaf.xadmin.exception.GlobalException;
+import com.leaf.xadmin.shiro.realm.UserRealm;
 import com.leaf.xadmin.utils.redis.JedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.mgt.RealmSecurityManager;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 
 import javax.servlet.ServletRequest;
@@ -32,8 +36,14 @@ public class AuthorFlushFilter extends AccessControlFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object o) throws Exception {
         // 判断redis中是否缓存该用户
-        String name = SecurityUtils.getSubject().getPrincipal().toString();
-        return !JedisUtil.getSet(GlobalConstants.SESSION_FLUSH_AUTHOR_KEY).contains(name);
+        Object principal = SecurityUtils.getSubject().getPrincipal();
+        if(principal != null) {
+            String name = principal.toString();
+            return !JedisUtil.getSet(GlobalConstants.SESSION_FLUSH_AUTHOR_KEY).contains(name);
+        }
+
+        // 未登录异常
+        throw new GlobalException(ErrorStatus.AUTHEN_LACK_ERROR);
     }
 
     /**
@@ -48,7 +58,7 @@ public class AuthorFlushFilter extends AccessControlFilter {
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         // 清空该用户的所有权限缓存信息
         RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
-        MyShiroRealm shiroRealm = (MyShiroRealm) rsm.getRealms().iterator().next();
+        UserRealm shiroRealm = (UserRealm) rsm.getRealms().iterator().next();
         shiroRealm.clearAllCachedAuthors();
 
         // 删除redis权限刷新标志

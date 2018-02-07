@@ -5,11 +5,15 @@ import com.leaf.xadmin.shiro.filter.AuthorFlushFilter;
 import com.leaf.xadmin.shiro.filter.ForceLogoutFilter;
 import com.leaf.xadmin.shiro.filter.TokenValidFilter;
 import com.leaf.xadmin.shiro.matcher.PasswordMatcher;
-import com.leaf.xadmin.shiro.realm.MyShiroRealm;
+import com.leaf.xadmin.shiro.realm.AdminRealm;
+import com.leaf.xadmin.shiro.realm.ExtendedModularRealmAuthenticator;
+import com.leaf.xadmin.shiro.realm.UserRealm;
 import com.leaf.xadmin.shiro.redis.JwtSessionIdGenerator;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -27,9 +31,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 import javax.servlet.Filter;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author leaf
@@ -101,26 +104,70 @@ public class ShiroConfig {
     @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+
+        // 自定义realm认证器(必须放在前面)
+        securityManager.setAuthenticator(modularRealmAuthenticator());
         // 设置realm
-        securityManager.setRealm(myShiroRealm());
+        securityManager.setRealms(realmCollection());
         // redis自定义缓存实现
         securityManager.setCacheManager(redisCacheManager());
         // redis自定义session管理
         securityManager.setSessionManager(redisSessionManager());
+
         return securityManager;
     }
 
     /**
-     * 身份认证realm
+     * 自定义认证器，实现多Realm认证
      *
      * @return
      */
     @Bean
-    public MyShiroRealm myShiroRealm() {
-        MyShiroRealm shiroRealm = new MyShiroRealm();
-        shiroRealm.setCredentialsMatcher(passwordMatcher);
-        return shiroRealm;
+    public ExtendedModularRealmAuthenticator modularRealmAuthenticator() {
+        ExtendedModularRealmAuthenticator authenticator = new ExtendedModularRealmAuthenticator();
+        // 配置认证策略(仅单个realm认证成功即可)
+        authenticator.setAuthenticationStrategy(new AtLeastOneSuccessfulStrategy());
+        return authenticator;
     }
+
+    /**
+     * 身份认证realm集合
+     *
+     * @return
+     */
+    public Collection<Realm> realmCollection() {
+        List<Realm> collection = new ArrayList<>();
+        // 用户身份realm认证
+        collection.add(userRealm());
+        // 管理员身份realm认证
+        collection.add(adminRealm());
+        return collection;
+    }
+
+    /**
+     * 用户身份认证
+     *
+     * @return
+     */
+    @Bean
+    public UserRealm userRealm() {
+        UserRealm userRealm = new UserRealm();
+        userRealm.setCredentialsMatcher(passwordMatcher);
+        return userRealm;
+    }
+
+    /**
+     * 管理员身份认证
+     *
+     * @return
+     */
+    @Bean
+    public AdminRealm adminRealm() {
+        AdminRealm adminRealm = new AdminRealm();
+        adminRealm.setCredentialsMatcher(passwordMatcher);
+        return adminRealm;
+    }
+
     /**
      * 配置shiro redisManager
      *

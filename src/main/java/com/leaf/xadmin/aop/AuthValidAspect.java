@@ -1,12 +1,9 @@
 package com.leaf.xadmin.aop;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.leaf.xadmin.entity.Permission;
 import com.leaf.xadmin.entity.Resource;
 import com.leaf.xadmin.entity.Role;
 import com.leaf.xadmin.service.IResourceService;
-import com.leaf.xadmin.shiro.realm.MyShiroRealm;
 import com.leaf.xadmin.utils.request.RequestResolveUtil;
 import com.leaf.xadmin.vo.RequestResourceVO;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
