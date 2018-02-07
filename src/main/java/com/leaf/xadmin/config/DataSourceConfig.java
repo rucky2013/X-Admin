@@ -47,7 +47,7 @@ public class DataSourceConfig {
     }
 
     /**
-     * 访问地址: http://localhost:8080/rent/druid/index.html
+     * 访问地址: http://localhost:8080/xadmin/druid/index.html
      *
      * 注册ServletRegistrationBean
      *
