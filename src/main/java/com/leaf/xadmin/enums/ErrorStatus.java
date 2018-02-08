@@ -24,10 +24,14 @@ public enum ErrorStatus {
     FORCE_LOGOUT_ERROR(1, "1008", "权限错误", "用户已被管理员强制下线，请重新登录"),
     ACCOUNT_EXIST_ERROR(1, "1009", "权限错误", "账户已存在，请重新注册"),
     HTTP_METHOD_ERROR(2, "2001", "HTTP错误", "请求姿势不对，要不换个试试----(｡◕‿◕｡)----"),
-    MISS_PARAMETER_ERROR(2, "2002", "HTTP错误", "缺少请求参数，请填写完整请求参数"),
+    MISS_PARAM_ERROR(2, "2002", "HTTP错误", "缺少请求参数，请填写完整请求参数"),
+    PARAM_INVALID_ERROR(2, "2003", "HTTP错误", "参数验证无效，请规范输入"),
+    PARAM_NO_MATCH_ERROR(2, "2004", "HTTP错误", "无法匹配请求参数，请检查后重试"),
     SYS_UNKNOWN_ERROR(3, "3001", "未知错误", "检测到系统未知异常，请联系管理员"),
     SYS_INNER_ERROR(4, "3002", "系统错误", "系统内部错误，无法识别异常类型"),
     MAIL_SEND_ERROR(4, "3003", "系统错误", "邮件发送失败，请检查确认"),
+    SQL_DATA_ERROR(5, "4001", "数据库错误", "数据库数据错误，请检查异常点"),
+    SQL_EXECUTE_ERROR(5, "4002", "数据库错误", "SQL语句执行失败，请先排查异常"),
     ;
 
     private Integer type;

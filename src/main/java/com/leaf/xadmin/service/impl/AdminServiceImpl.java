@@ -48,7 +48,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
                 throw new GlobalException(ErrorStatus.ACCOUNT_EXIST_ERROR);
             }
             // 生成id
-            id = LoginType.ADMIN.getType().substring(0, 1) + "_" + idWorker.nextId();
+            id = String.valueOf(idWorker.nextId());
             // 设置密钥
             passEncryptUtil.setSecretKey(LoginType.ADMIN.getType() + admin.getName());
             admin.setId(id);

@@ -19,10 +19,6 @@ public class ResponseResultUtil {
         return result;
     }
 
-    public static ResponseResultVO success() {
-        return success(null);
-    }
-
     public static ResponseResultVO fail(ErrorTemplateVO template) {
         ResponseResultVO result = new ResponseResultVO();
         result.setStatus(ResponseStatus.FAIL.getStatus());
@@ -31,31 +27,24 @@ public class ResponseResultUtil {
         return result;
     }
 
-    public static ResponseResultVO fail() {
-        ResponseResultVO result = new ResponseResultVO();
-        result.setStatus(0);
-        result.setMessage("fail");
-        result.setResult("");
-        return result;
-    }
-
-    public static ResponseResultVO fail(ErrorStatus status, String exception, String path) {
+    public static ResponseResultVO fail(ErrorStatus status, String exception, String detail, String path) {
         ErrorTemplateVO template = ErrorTemplateVO.builder()
                 .error(status.getError())
                 .code(status.getCode())
                 .message(status.getMessage())
                 .exception(exception)
+                .detail(detail)
                 .path(path)
                 .build();
         return fail(template);
     }
 
-    public static ResponseResultVO fail(ErrorStatus status) {
-        return fail(status, "", "");
+    public static ResponseResultVO fail(ErrorStatus status, String exception, String detail) {
+        return fail(status, exception, detail, null);
     }
 
     public static ResponseResultVO fail(ErrorStatus status, String exception) {
-        return fail(status, exception, "");
+        return fail(status, exception, null, null);
     }
 
 }

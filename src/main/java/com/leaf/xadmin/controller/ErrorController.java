@@ -1,10 +1,13 @@
 package com.leaf.xadmin.controller;
 
+import com.leaf.xadmin.enums.ErrorStatus;
+import com.leaf.xadmin.exception.ForceLogoutException;
+import com.leaf.xadmin.exception.GlobalException;
+import com.leaf.xadmin.exception.RepeatLoginException;
+import com.leaf.xadmin.exception.TokenDecodeException;
+import com.leaf.xadmin.utils.response.ResponseResultUtil;
 import com.leaf.xadmin.vo.ErrorTemplateVO;
 import com.leaf.xadmin.vo.ResponseResultVO;
-import com.leaf.xadmin.enums.ErrorStatus;
-import com.leaf.xadmin.exception.*;
-import com.leaf.xadmin.utils.response.ResponseResultUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -14,18 +17,29 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.AbstractErrorController;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
+import org.springframework.http.HttpMethod;
+import org.springframework.util.CollectionUtils;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author leaf
@@ -119,20 +133,45 @@ public class ErrorController extends AbstractErrorController {
         return ResponseResultUtil.fail(ErrorStatus.TOKEN_DECODE_ERROR, e.getClass().getName());
     }
 
-
     @ApiOperation(value = "HTTP请求方法错误")
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
     @GetMapping("method")
     public ResponseResultVO httpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        return ResponseResultUtil.fail(ErrorStatus.HTTP_METHOD_ERROR, e.getClass().getName());
+        Set<HttpMethod> supportedHttpMethods = e.getSupportedHttpMethods();
+        HttpMethod next = supportedHttpMethods.iterator().next();
+        return ResponseResultUtil.fail(ErrorStatus.HTTP_METHOD_ERROR, e.getClass().getName(), next.name());
     }
 
     @ApiOperation(value = "缺少请求参数")
     @ExceptionHandler({MissingServletRequestParameterException.class})
-    @GetMapping("params")
+    @GetMapping("miss_params")
     public ResponseResultVO missingServletRequestParameterException(MissingServletRequestParameterException e) {
 
-        return ResponseResultUtil.fail(ErrorStatus.MISS_PARAMETER_ERROR, e.getClass().getName());
+        return ResponseResultUtil.fail(ErrorStatus.MISS_PARAM_ERROR, e.getClass().getName(), e.getParameterName());
+    }
+
+    @ApiOperation(value = "简单参数验证无效")
+    @GetMapping("invalid_param")
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseResultVO constraintViolationException(ConstraintViolationException e) {
+        Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+        ConstraintViolation<?> next = constraintViolations.iterator().next();
+        return ResponseResultUtil.fail(ErrorStatus.PARAM_INVALID_ERROR, e.getClass().getName(), next.getMessage());
+    }
+
+    @ApiOperation(value = "复杂参数验证无效")
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @GetMapping("invalid_params")
+    public ResponseResultVO methodArgumentNotValidException(MethodArgumentNotValidException e) {
+        ObjectError next = e.getBindingResult().getAllErrors().iterator().next();
+        return ResponseResultUtil.fail(ErrorStatus.PARAM_INVALID_ERROR, e.getClass().getName(), next.getDefaultMessage());
+    }
+
+    @ApiOperation(value = "参数类型不匹配")
+    @ExceptionHandler(TypeMismatchException.class)
+    @GetMapping("no_match_params")
+    public ResponseResultVO typeMismatchException(TypeMismatchException e) {
+        return ResponseResultUtil.fail(ErrorStatus.PARAM_NO_MATCH_ERROR, e.getClass().getName(), e.getPropertyName() + ":" + e.getRequiredType());
     }
 
     @ApiOperation(value = "重复登录")

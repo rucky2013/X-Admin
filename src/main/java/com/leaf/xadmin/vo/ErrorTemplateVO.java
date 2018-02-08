@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 
 /**
  * @author leaf
@@ -19,6 +20,7 @@ public class ErrorTemplateVO {
     private String code;
     private String error;
     private String message;
+    private String detail;
     private String exception;
     private String path;
 }

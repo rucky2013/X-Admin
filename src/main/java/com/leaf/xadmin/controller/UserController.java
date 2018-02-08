@@ -4,22 +4,23 @@ import com.leaf.xadmin.enums.LoginType;
 import com.leaf.xadmin.shiro.token.ExtendedUsernamePasswordToken;
 import com.leaf.xadmin.vo.ResponseResultVO;
 import com.leaf.xadmin.entity.User;
-import com.leaf.xadmin.enums.ErrorStatus;
-import com.leaf.xadmin.exception.RepeatLoginException;
 import com.leaf.xadmin.service.IUserService;
 import com.leaf.xadmin.utils.jwt.JwtUtil;
 import com.leaf.xadmin.utils.response.ResponseResultUtil;
+import com.leaf.xadmin.vo.form.UserRegisterInfoForm;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 /**
  * @author leaf
@@ -34,20 +35,6 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
-
-    @ApiOperation(value = "获取指定id用户信息")
-    @GetMapping(value = "getUser/{id}")
-    public ResponseResultVO getUserById(@PathVariable("id") String id) {
-        User user = userService.queryOneById(id);
-        return user != null ? ResponseResultUtil.success(user) : ResponseResultUtil.fail();
-    }
-
-    @ApiOperation(value = "获取指定用户名信息")
-    @GetMapping(value = "getUser/{name}")
-    public ResponseResultVO getUserByName(@PathVariable("name") String name) {
-        return ResponseResultUtil.success(userService.queryOneByName(name));
-    }
-
 
     @ApiOperation(value = "用户登录")
     @PostMapping(value = "login")
@@ -76,5 +63,25 @@ public class UserController {
         // 清除用户权限缓存
         SecurityUtils.getSubject().logout();
         return ResponseResultUtil.success(true);
+    }
+
+    @ApiOperation(value = "用户注册")
+    @PostMapping(value = "register")
+    public ResponseResultVO register(@Valid UserRegisterInfoForm registerInfoVO) {
+        User user = User.builder().build();
+        BeanUtils.copyProperties(registerInfoVO, user);
+        return ResponseResultUtil.success(userService.addOne(user));
+    }
+
+    @ApiOperation(value = "获取指定id用户信息")
+    @GetMapping(value = "getUser/{id}")
+    public ResponseResultVO getUserById(@Validated @PathVariable("id") String id) {
+        return ResponseResultUtil.success(userService.queryOneById(id));
+    }
+
+    @ApiOperation(value = "获取指定用户名信息")
+    @GetMapping(value = "getUser/{name}")
+    public ResponseResultVO getUserByName(@PathVariable("name") String name) {
+        return ResponseResultUtil.success(userService.queryOneByName(name));
     }
 }

@@ -2,6 +2,7 @@ package com.leaf.xadmin.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.leaf.xadmin.entity.Account;
 import com.leaf.xadmin.entity.Resource;
 import com.leaf.xadmin.entity.User;
 import com.leaf.xadmin.enums.ErrorStatus;
@@ -9,6 +10,7 @@ import com.leaf.xadmin.enums.LoginType;
 import com.leaf.xadmin.enums.UserStatus;
 import com.leaf.xadmin.exception.GlobalException;
 import com.leaf.xadmin.mapper.UserMapper;
+import com.leaf.xadmin.service.IAccountService;
 import com.leaf.xadmin.service.IUserService;
 import com.leaf.xadmin.utils.encrypt.PassEncryptUtil;
 import com.leaf.xadmin.utils.generator.SnowflakeUtil;
@@ -20,6 +22,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
@@ -35,6 +38,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Autowired
     private PassEncryptUtil passEncryptUtil;
 
+    @Autowired
+    private IAccountService accountService;
+
     @Override
     public Serializable addOne(User user) {
         String id = null;
@@ -47,12 +53,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 throw new GlobalException(ErrorStatus.ACCOUNT_EXIST_ERROR);
             }
             // 生成id
-            id = LoginType.USER.getType().substring(0, 1) + "_" + idWorker.nextId();
+            id = String.valueOf(idWorker.nextId());
             // 设置密钥
             passEncryptUtil.setSecretKey(LoginType.USER.getType() + user.getName());
             user.setId(id);
             user.setPass(passEncryptUtil.encryptPass(user.getPass()));
-            baseMapper.insert(user);
+            if (baseMapper.insert(user).equals(1)) {
+                Account account = Account.builder()
+                        .id(id)
+                        .email(user.getEmail())
+                        .phone(user.getPhone())
+                        .nickname(user.getName())
+                        .build();
+                accountService.addOne(account);
+            } else {
+                throw new GlobalException(ErrorStatus.SQL_EXECUTE_ERROR);
+            }
         }
 
         return id;
