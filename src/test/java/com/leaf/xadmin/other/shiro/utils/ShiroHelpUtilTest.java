@@ -1,4 +1,4 @@
-package com.leaf.xadmin.shiro.util;
+package com.leaf.xadmin.other.shiro.util;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

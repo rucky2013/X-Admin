@@ -2,7 +2,7 @@ package com.leaf.xadmin.shiro.filter;
 
 import com.leaf.xadmin.constants.GlobalConstants;
 import com.leaf.xadmin.enums.ErrorStatus;
-import com.leaf.xadmin.exception.ForceLogoutException;
+import com.leaf.xadmin.exception.GlobalException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
@@ -34,6 +34,6 @@ public class ForceLogoutFilter extends AccessControlFilter {
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         log.debug(SecurityUtils.getSubject().getPrincipal().toString() + "用户已被管理员强制下线...");
         getSubject(request, response).logout();
-        throw new ForceLogoutException(ErrorStatus.FORCE_LOGOUT_ERROR);
+        throw new GlobalException(ErrorStatus.FORCE_LOGOUT_ERROR);
     }
 }

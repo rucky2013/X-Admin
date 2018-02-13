@@ -4,7 +4,6 @@ import com.leaf.xadmin.shiro.token.ExtendedUsernamePasswordToken;
 import com.leaf.xadmin.utils.encrypt.PassEncryptUtil;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -7,9 +7,7 @@ import com.leaf.xadmin.shiro.realm.UserRealm;
 import com.leaf.xadmin.utils.redis.JedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.mgt.RealmSecurityManager;
-import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 
 import javax.servlet.ServletRequest;
