@@ -6,10 +6,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.leaf.xadmin.constants.GlobalConstants;
-import com.leaf.xadmin.enums.ErrorStatus;
-import com.leaf.xadmin.exception.TokenDecodeException;
-import com.leaf.xadmin.exception.TokenExpiredException;
-import com.leaf.xadmin.exception.TokenInvalidException;
+import com.leaf.xadmin.vo.enums.ErrorStatus;
+import com.leaf.xadmin.vo.exception.GlobalException;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +51,7 @@ public class JwtUtil {
                     .withExpiresAt(expireDate)
                     .sign(Algorithm.HMAC256(GlobalConstants.JWT_SECRET));
         } catch (UnsupportedEncodingException e) {
-            throw new TokenDecodeException(ErrorStatus.TOKEN_DECODE_ERROR);
+            throw new GlobalException(ErrorStatus.TOKEN_DECODE_ERROR);
         }
 
 
@@ -73,16 +71,16 @@ public class JwtUtil {
             verifier = JWT.require(Algorithm.HMAC256(GlobalConstants.JWT_SECRET))
                     .build();
         } catch (UnsupportedEncodingException e) {
-            throw new TokenDecodeException(ErrorStatus.TOKEN_DECODE_ERROR);
+            throw new GlobalException(ErrorStatus.TOKEN_DECODE_ERROR);
         }
 
         DecodedJWT jwt;
         try {
             jwt = verifier.verify(token);
         } catch (com.auth0.jwt.exceptions.TokenExpiredException e) {
-            throw new TokenExpiredException(ErrorStatus.TOKEN_EXPIRE_ERROR);
+            throw new GlobalException(ErrorStatus.TOKEN_EXPIRE_ERROR);
         } catch (Exception e1) {
-            throw new TokenInvalidException(ErrorStatus.TOKEN_INVALID_ERROR);
+            throw new GlobalException(ErrorStatus.TOKEN_INVALID_ERROR);
         }
 
         return jwt.getClaims();

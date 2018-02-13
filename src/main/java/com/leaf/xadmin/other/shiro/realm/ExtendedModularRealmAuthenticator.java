@@ -1,6 +1,6 @@
-package com.leaf.xadmin.shiro.realm;
+package com.leaf.xadmin.other.shiro.realm;
 
-import com.leaf.xadmin.shiro.token.ExtendedUsernamePasswordToken;
+import com.leaf.xadmin.other.shiro.token.ExtendedUsernamePasswordToken;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

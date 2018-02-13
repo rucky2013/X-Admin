@@ -1,7 +1,7 @@
 package com.leaf.xadmin.controller;
 
-import com.leaf.xadmin.enums.LoginType;
-import com.leaf.xadmin.shiro.token.ExtendedUsernamePasswordToken;
+import com.leaf.xadmin.vo.enums.LoginType;
+import com.leaf.xadmin.other.shiro.token.ExtendedUsernamePasswordToken;
 import com.leaf.xadmin.vo.ResponseResultVO;
 import com.leaf.xadmin.entity.User;
 import com.leaf.xadmin.service.IUserService;
@@ -62,7 +62,7 @@ public class UserController {
         userService.logout(SecurityUtils.getSubject().getPrincipal().toString());
         // 清除用户权限缓存
         SecurityUtils.getSubject().logout();
-        return ResponseResultUtil.success(true);
+        return ResponseResultUtil.success(Boolean.TRUE);
     }
 
     @ApiOperation(value = "用户注册")

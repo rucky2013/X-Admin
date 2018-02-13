@@ -1,8 +1,8 @@
-package com.leaf.xadmin.shiro.filter;
+package com.leaf.xadmin.other.shiro.filter;
 
 import com.leaf.xadmin.constants.GlobalConstants;
-import com.leaf.xadmin.enums.ErrorStatus;
-import com.leaf.xadmin.exception.GlobalException;
+import com.leaf.xadmin.vo.enums.ErrorStatus;
+import com.leaf.xadmin.vo.exception.GlobalException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;

@@ -1,11 +1,11 @@
-package com.leaf.xadmin.shiro.realm;
+package com.leaf.xadmin.other.shiro.realm;
 
 import com.leaf.xadmin.entity.Admin;
 import com.leaf.xadmin.entity.Permission;
 import com.leaf.xadmin.entity.Role;
-import com.leaf.xadmin.enums.AdminStatus;
-import com.leaf.xadmin.enums.ErrorStatus;
-import com.leaf.xadmin.exception.GlobalException;
+import com.leaf.xadmin.vo.enums.AdminStatus;
+import com.leaf.xadmin.vo.enums.ErrorStatus;
+import com.leaf.xadmin.vo.exception.GlobalException;
 import com.leaf.xadmin.service.IAdminService;
 import com.leaf.xadmin.service.IPermissionService;
 import com.leaf.xadmin.service.IRoleService;

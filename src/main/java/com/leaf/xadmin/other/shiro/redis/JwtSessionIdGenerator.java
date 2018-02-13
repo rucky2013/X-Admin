@@ -1,4 +1,4 @@
-package com.leaf.xadmin.shiro.redis;
+package com.leaf.xadmin.other.shiro.redis;
 
 import com.leaf.xadmin.utils.generator.SnowflakeUtil;
 import org.apache.shiro.session.Session;

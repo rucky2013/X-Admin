@@ -2,12 +2,10 @@ package com.leaf.xadmin.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.leaf.xadmin.entity.Admin;
-import com.leaf.xadmin.enums.AdminStatus;
 import org.apache.shiro.session.Session;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @author leaf

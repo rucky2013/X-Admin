@@ -1,19 +1,14 @@
 package com.leaf.xadmin.controller;
 
-import com.leaf.xadmin.enums.ErrorStatus;
-import com.leaf.xadmin.exception.ForceLogoutException;
-import com.leaf.xadmin.exception.GlobalException;
-import com.leaf.xadmin.exception.RepeatLoginException;
-import com.leaf.xadmin.exception.TokenDecodeException;
+import com.leaf.xadmin.vo.enums.ErrorStatus;
+import com.leaf.xadmin.vo.exception.GlobalException;
 import com.leaf.xadmin.utils.response.ResponseResultUtil;
 import com.leaf.xadmin.vo.ErrorTemplateVO;
 import com.leaf.xadmin.vo.ResponseResultVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -23,7 +18,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.AbstractErrorController;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.http.HttpMethod;
-import org.springframework.util.CollectionUtils;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -75,7 +69,7 @@ public class ErrorController extends AbstractErrorController {
         RequestAttributes requestAttributes = new ServletRequestAttributes(request);
         Throwable exception = attributes.getError(requestAttributes).getCause();
         if (exception instanceof GlobalException) {
-            // 转换为自定义错误枚举类型
+            // 转换为自定义错误异常
             ErrorStatus status = ((GlobalException) exception).getStatus();
             template = ErrorTemplateVO.builder()
                     .error(status.getError())
@@ -85,7 +79,7 @@ public class ErrorController extends AbstractErrorController {
                     .path(errorAttributes.get("path").toString())
                     .build();
         } else {
-            // 转换为系统未知异常
+            // 转换为未识别异常
             template = ErrorTemplateVO.builder()
                     .error(ErrorStatus.SYS_INNER_ERROR.getError())
                     .code(ErrorStatus.SYS_INNER_ERROR.getCode())
@@ -112,25 +106,11 @@ public class ErrorController extends AbstractErrorController {
         return ResponseResultUtil.fail(ErrorStatus.LOGIN_FAIL_ERROR, e.getClass().getName());
     }
 
-    @ApiOperation(value = "账户被锁定")
-    @ExceptionHandler({LockedAccountException.class})
-    @GetMapping("locked")
-    public ResponseResultVO lockedAccountException(AuthenticationException e) {
-        return ResponseResultUtil.fail(ErrorStatus.ACCOUNT_LOCK_ERROR, e.getClass().getName());
-    }
-
     @ApiOperation(value = "尚未授权，无法操作")
     @ExceptionHandler({UnauthorizedException.class})
     @GetMapping("author")
     public ResponseResultVO unauthorizedException(UnauthorizedException e) {
         return ResponseResultUtil.fail(ErrorStatus.AUTHOR_LACK_ERROR, e.getClass().getName());
-    }
-
-    @ApiOperation(value = "无解析token编码支持")
-    @ExceptionHandler({TokenDecodeException.class})
-    @GetMapping("decode")
-    public ResponseResultVO unsupportedEncodingException(TokenDecodeException e) {
-        return ResponseResultUtil.fail(ErrorStatus.TOKEN_DECODE_ERROR, e.getClass().getName());
     }
 
     @ApiOperation(value = "HTTP请求方法错误")
@@ -172,19 +152,5 @@ public class ErrorController extends AbstractErrorController {
     @GetMapping("no_match_params")
     public ResponseResultVO typeMismatchException(TypeMismatchException e) {
         return ResponseResultUtil.fail(ErrorStatus.PARAM_NO_MATCH_ERROR, e.getClass().getName(), e.getPropertyName() + ":" + e.getRequiredType());
-    }
-
-    @ApiOperation(value = "重复登录")
-    @ExceptionHandler({RepeatLoginException.class})
-    @GetMapping("repeat")
-    public ResponseResultVO repeatLoginException(RepeatLoginException e) {
-        return ResponseResultUtil.fail(ErrorStatus.REPEAT_LOGIN_ERROR, e.getClass().getName());
-    }
-
-    @ApiOperation(value = "强制退出")
-    @ExceptionHandler({ForceLogoutException.class})
-    @GetMapping("force")
-    public ResponseResultVO forceLogoutException(ForceLogoutException e) {
-        return ResponseResultUtil.fail(ErrorStatus.FORCE_LOGOUT_ERROR, e.getClass().getName());
     }
 }

@@ -24,7 +24,6 @@ import java.lang.reflect.Method;
  * <p>date: 2018-01-01 18:44</p>
  */
 @Configuration
-@EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
 
     /**

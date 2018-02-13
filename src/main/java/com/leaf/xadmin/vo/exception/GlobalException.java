@@ -1,6 +1,6 @@
-package com.leaf.xadmin.exception;
+package com.leaf.xadmin.vo.exception;
 
-import com.leaf.xadmin.enums.ErrorStatus;
+import com.leaf.xadmin.vo.enums.ErrorStatus;
 import lombok.Getter;
 import lombok.Setter;
 

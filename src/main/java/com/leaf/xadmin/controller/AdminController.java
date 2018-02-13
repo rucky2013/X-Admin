@@ -2,10 +2,10 @@ package com.leaf.xadmin.controller;
 
 import com.leaf.xadmin.entity.Admin;
 import com.leaf.xadmin.entity.Resource;
-import com.leaf.xadmin.enums.LoginType;
+import com.leaf.xadmin.vo.enums.LoginType;
 import com.leaf.xadmin.service.IAdminService;
 import com.leaf.xadmin.service.IResourceService;
-import com.leaf.xadmin.shiro.token.ExtendedUsernamePasswordToken;
+import com.leaf.xadmin.other.shiro.token.ExtendedUsernamePasswordToken;
 import com.leaf.xadmin.utils.request.RequestResolveUtil;
 import com.leaf.xadmin.utils.response.ResponseResultUtil;
 import com.leaf.xadmin.vo.RequestResourceVO;
@@ -58,7 +58,7 @@ public class AdminController {
         if (!subject.isAuthenticated()) {
             ExtendedUsernamePasswordToken token = new ExtendedUsernamePasswordToken(name, pass, LoginType.ADMIN.getType());
             subject.login(token);
-            return ResponseResultUtil.success(true);
+            return ResponseResultUtil.success(Boolean.TRUE);
         } else {
             // 退出，重新登录
             logout();
@@ -71,7 +71,7 @@ public class AdminController {
     public ResponseResultVO logout() {
         // 清除用户权限缓存
         SecurityUtils.getSubject().logout();
-        return ResponseResultUtil.success(true);
+        return ResponseResultUtil.success(Boolean.TRUE);
     }
 
     @ApiOperation(value = "管理员注册")

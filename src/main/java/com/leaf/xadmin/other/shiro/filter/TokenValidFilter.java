@@ -1,6 +1,6 @@
-package com.leaf.xadmin.shiro.filter;
+package com.leaf.xadmin.other.shiro.filter;
 
-import com.leaf.xadmin.exception.GlobalException;
+import com.leaf.xadmin.vo.exception.GlobalException;
 import com.leaf.xadmin.utils.jwt.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;

@@ -1,4 +1,4 @@
-package com.leaf.xadmin.enums;
+package com.leaf.xadmin.vo.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

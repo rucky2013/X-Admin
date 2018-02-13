@@ -1,4 +1,4 @@
-package com.leaf.xadmin.aop;
+package com.leaf.xadmin.other.aop;
 
 import com.leaf.xadmin.entity.Permission;
 import com.leaf.xadmin.entity.Resource;

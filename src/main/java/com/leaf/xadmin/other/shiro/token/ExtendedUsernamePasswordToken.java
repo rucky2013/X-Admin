@@ -1,4 +1,4 @@
-package com.leaf.xadmin.shiro.token;
+package com.leaf.xadmin.other.shiro.token;
 
 import lombok.Data;
 import org.apache.shiro.authc.UsernamePasswordToken;

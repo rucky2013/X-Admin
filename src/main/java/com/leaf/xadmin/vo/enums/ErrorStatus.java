@@ -1,4 +1,4 @@
-package com.leaf.xadmin.enums;
+package com.leaf.xadmin.vo.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +31,7 @@ public enum ErrorStatus {
     SYS_INNER_ERROR(3, "3002", "系统错误", "系统内部运行错误，系尚未识别异常"),
     MAIL_SEND_ERROR(3, "3003", "系统错误", "邮件发送失败，请检查确认"),
     VERIFY_PICTURE_ERROR(3, "3004", "系统错误", "验证码生成错误，请稍候重试"),
+    QUARTZ_JOB_ERROR(3, "3005", "系统错误", "任务操作失败，请稍后重试"),
     SQL_DATA_ERROR(4, "4001", "数据库错误", "数据库数据错误，请检查异常点"),
     SQL_EXECUTE_ERROR(4, "4002", "数据库错误", "SQL语句执行失败，请先排查异常"),
     ;

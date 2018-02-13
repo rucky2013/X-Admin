@@ -1,16 +1,14 @@
 package com.leaf.xadmin.config;
 
 import com.leaf.xadmin.constants.GlobalConstants;
-import com.leaf.xadmin.shiro.filter.AuthorFlushFilter;
-import com.leaf.xadmin.shiro.filter.ForceLogoutFilter;
-import com.leaf.xadmin.shiro.filter.TokenValidFilter;
-import com.leaf.xadmin.shiro.matcher.PasswordMatcher;
-import com.leaf.xadmin.shiro.realm.AdminRealm;
-import com.leaf.xadmin.shiro.realm.ExtendedModularRealmAuthenticator;
-import com.leaf.xadmin.shiro.realm.UserRealm;
-import com.leaf.xadmin.shiro.redis.JwtSessionIdGenerator;
-import lombok.Getter;
-import lombok.Setter;
+import com.leaf.xadmin.other.shiro.filter.AuthorFlushFilter;
+import com.leaf.xadmin.other.shiro.filter.ForceLogoutFilter;
+import com.leaf.xadmin.other.shiro.filter.TokenValidFilter;
+import com.leaf.xadmin.other.shiro.matcher.PasswordMatcher;
+import com.leaf.xadmin.other.shiro.realm.AdminRealm;
+import com.leaf.xadmin.other.shiro.realm.ExtendedModularRealmAuthenticator;
+import com.leaf.xadmin.other.shiro.realm.UserRealm;
+import com.leaf.xadmin.other.shiro.redis.JwtSessionIdGenerator;
 import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
@@ -32,7 +30,6 @@ import org.springframework.context.annotation.PropertySource;
 
 import javax.servlet.Filter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author leaf

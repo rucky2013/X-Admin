@@ -2,7 +2,6 @@ package com.leaf.xadmin.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.leaf.xadmin.entity.User;
-import com.leaf.xadmin.enums.UserStatus;
 
 import java.io.Serializable;
 import java.util.List;

@@ -16,7 +16,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * <p>date: 2018-01-02 19:46</p>
  */
 @Configuration
-@EnableSwagger2
 @Profile({ "dev", "test" })
 public class Swagger2Config {
 

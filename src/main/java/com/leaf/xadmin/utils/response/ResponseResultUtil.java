@@ -1,9 +1,9 @@
 package com.leaf.xadmin.utils.response;
 
-import com.leaf.xadmin.enums.ResponseStatus;
+import com.leaf.xadmin.vo.enums.ResponseStatus;
 import com.leaf.xadmin.vo.ErrorTemplateVO;
 import com.leaf.xadmin.vo.ResponseResultVO;
-import com.leaf.xadmin.enums.ErrorStatus;
+import com.leaf.xadmin.vo.enums.ErrorStatus;
 
 /**
  * @author leaf
@@ -19,11 +19,11 @@ public class ResponseResultUtil {
         return result;
     }
 
-    public static ResponseResultVO fail(ErrorTemplateVO template) {
+    public static ResponseResultVO fail(Object data) {
         ResponseResultVO result = new ResponseResultVO();
         result.setStatus(ResponseStatus.FAIL.getStatus());
         result.setMessage(ResponseStatus.FAIL.getMessage());
-        result.setResult(template);
+        result.setResult(data);
         return result;
     }
 
